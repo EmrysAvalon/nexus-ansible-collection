@@ -51,7 +51,7 @@
   ansible.builtin.template:
     src: nexus-store.properties.j2
     dest: "{{ nexus_data_dir }}/etc/fabric/nexus-store.properties"
-    backup: yes
+    backup: true
     owner: "{{ nexus_os_user }}"
     group: "{{ nexus_os_group }}"
     mode: "0640"
