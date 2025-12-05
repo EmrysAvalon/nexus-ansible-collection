@@ -56,6 +56,7 @@
     group: "{{ nexus_os_group }}"
     mode: "0640"
   tags: nexus-postgres,nexus-migrate
+  notify: nexus-service-restart
 
 - name: Start Nexus service
   ansible.builtin.systemd:
