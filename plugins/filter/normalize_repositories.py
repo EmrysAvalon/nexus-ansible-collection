@@ -1,4 +1,5 @@
 import copy
+from collections.abc import Mapping
 
 UPPERCASE_FIELDS = [
     "storage.writePolicy",
@@ -44,6 +45,19 @@ def set_nested_value(data, key_path, value):
     for key in keys[:-1]:
         data = data.setdefault(key, {})
     data[keys[-1]] = value
+
+
+def to_native(data):
+    """
+    Recursively convert mappings and lists to plain dicts and lists.
+    ansible-core 2.19+ passes lazily templated containers to filters, and deep copying
+    those fails on embedded templates; iterating over them renders the templates instead.
+    """
+    if isinstance(data, Mapping):
+        return {key: to_native(value) for key, value in data.items()}
+    if isinstance(data, (list, tuple)):
+        return [to_native(item) for item in data]
+    return data
 
 
 def merge_dict(source, destination):
@@ -176,6 +190,12 @@ def normalize_and_clean_repositories_with_explicit_cleanup(
     """
     Normalize repositories and ensure explicit removal of all legacy attributes.
     """
+    repo_data = to_native(repo_data)
+    global_defaults = to_native(global_defaults)
+    type_defaults = to_native(type_defaults)
+    format_defaults = to_native(format_defaults)
+    legacy_field_map = to_native(legacy_field_map)
+
     normalized_repos = []
     for repo in repo_data:
         # Normalize the repository
