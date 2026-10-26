@@ -50,6 +50,9 @@
     force_basic_auth: true
     validate_certs: "{{ nexus_api_validate_certs }}"
   register: __nexus_health__
+  until: __nexus_health__.status == 200
+  retries: "{{ nexus_api_availability_retries }}"
+  delay: "{{ nexus_api_availability_delay }}"
   tags: nexus-encrypt
 
 - name: Re-encrypt Nexus data
@@ -64,6 +67,11 @@
     body:
       secretKeyId: "{{ nexus_active_encryption_key_id }}"
     status_code: 202
+  # The restart handler does not block, so retry until the restarted instance has loaded the new key
+  register: __nexus_reencrypt__
+  until: __nexus_reencrypt__.status == 202
+  retries: "{{ nexus_api_availability_retries }}"
+  delay: "{{ nexus_api_availability_delay }}"
   changed_when: true
   when: not nexus_active_encryption_key_id in __nexus_health__.json['Default Secret Encryption Key'].message
   tags: nexus-encrypt

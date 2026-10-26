@@ -127,7 +127,7 @@
             (__nxs_crnt_yum_prxy__ | selectattr('name', 'equalto', item.name) | first).httpClient.authentication.ntlmDomain | default(None) != item.httpClient.authentication.ntlmDomain | default(None)
         )
     ) or
-    (__nxs_crnt_yum_prxy__ | selectattr('name', 'equalto', item.name) | first).routingRuleName | default(omit) != item.routingRule | default(None)
+    (__nxs_crnt_yum_prxy__ | selectattr('name', 'equalto', item.name) | first).routingRuleName | default(None) != item.routingRule | default(None)
   tags:
     - yum
     - yum-proxy

@@ -132,7 +132,7 @@
     (__nxs_crnt_mvn_prxy__ | selectattr('name', 'equalto', item.name) | first).maven.layoutPolicy | default(omit) | upper != item.maven.layoutPolicy | default(None) | upper or
     (__nxs_crnt_mvn_prxy__ | selectattr('name', 'equalto', item.name) | first).maven.contentDisposition | default(omit) | upper != item.maven.contentDisposition | default(None) | upper or
     (__nxs_crnt_mvn_prxy__ | selectattr('name', 'equalto', item.name) | first).cleanup.policyNames | default([]) | sort != item.cleanup.policyNames | default([]) | sort or
-    (__nxs_crnt_mvn_prxy__ | selectattr('name', 'equalto', item.name) | first).routingRuleName | default(omit) != item.routingRule | default(None)
+    (__nxs_crnt_mvn_prxy__ | selectattr('name', 'equalto', item.name) | first).routingRuleName | default(None) != item.routingRule | default(None)
   tags:
     - maven
     - maven-proxy

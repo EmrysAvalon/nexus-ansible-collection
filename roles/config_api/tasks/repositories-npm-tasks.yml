@@ -125,7 +125,7 @@
             (__nxs_crnt_npm_prxy__ | selectattr('name', 'equalto', item.name) | first).httpClient.authentication.ntlmDomain | default(None) != item.httpClient.authentication.ntlmDomain | default(None)
         )
     ) or
-    (__nxs_crnt_npm_prxy__ | selectattr('name', 'equalto', item.name) | first).routingRuleName | default(omit) != item.routingRule | default(None) or
+    (__nxs_crnt_npm_prxy__ | selectattr('name', 'equalto', item.name) | first).routingRuleName | default(None) != item.routingRule | default(None) or
     (__nxs_crnt_npm_prxy__ | selectattr('name', 'equalto', item.name) | first).npm.removeQuarantined | default(false) != item.npm.removeQuarantined | default(false)
   tags:
     - npm

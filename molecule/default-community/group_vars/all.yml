@@ -535,8 +535,7 @@ nexus_repos_rubygems_hosted:
       blobStoreName: default
       strictContentTypeValidation: false
     cleanup:
-      policyNames:
-        - rubygems_cleanup
+      policyNames: []
 
 nexus_repos_rubygems_proxy:
   - name: rubygems-proxy-1
@@ -611,8 +610,7 @@ nexus_repos_cargo_hosted:
       blobStoreName: default
       strictContentTypeValidation: false
     cleanup:
-      policyNames:
-        - cargo_cleanup
+      policyNames: []
 
 nexus_repos_cargo_proxy:
   - name: cargo-proxy-1
@@ -669,7 +667,7 @@ nexus_repos_cargo_group:
 nexus_repos_go_proxy:
   - name: go-proxy-1
     proxy:
-      remoteUrl: https://gocenter.io
+      remoteUrl: https://proxy.golang.org
       contentMaxAge: 1440
       metadataMaxAge: 1440
     negativeCache:
@@ -682,13 +680,13 @@ nexus_repos_go_proxy:
         useTrustStore: true
   - name: go-proxy-2
     proxy:
-      remoteUrl: https://gocenter.io
+      remoteUrl: https://proxy.golang.org
       contentMaxAge: 1440
       metadataMaxAge: 1440
     routingRule: routing-rule-allow-all
   - name: go-proxy-3
     proxy:
-      remoteUrl: https://gocenter.io
+      remoteUrl: https://proxy.golang.org
       contentMaxAge: 1440
       metadataMaxAge: 1440
     negativeCache:
@@ -739,8 +737,7 @@ nexus_repos_conan_hosted:
       blobStoreName: default
       strictContentTypeValidation: false
     cleanup:
-      policyNames:
-        - conan_cleanup
+      policyNames: []
 
 nexus_repos_conan_proxy:
   - name: conan-proxy-1
@@ -774,7 +771,7 @@ nexus_repos_conan_proxy:
 nexus_repos_cocoapods_proxy:
   - name: cocoa-proxy-1
     proxy:
-      remoteUrl: https://cocoapods-specs
+      remoteUrl: https://cdn.cocoapods.org/
       contentMaxAge: 1440
       metadataMaxAge: 1440
     negativeCache:
@@ -787,13 +784,13 @@ nexus_repos_cocoapods_proxy:
         useTrustStore: true
   - name: cocoa-proxy-2
     proxy:
-      remoteUrl: https://cocoapods-specs
+      remoteUrl: https://cdn.cocoapods.org/
       contentMaxAge: 1440
       metadataMaxAge: 1440
     routingRule: routing-rule-allow-all
   - name: cocoa-proxy-3
     proxy:
-      remoteUrl: https://cocoapods-specs
+      remoteUrl: https://cdn.cocoapods.org/
       contentMaxAge: 1440
       metadataMaxAge: 1440
     negativeCache:
@@ -850,8 +847,7 @@ nexus_repos_raw_hosted:
       blobStoreName: default
       strictContentTypeValidation: false
     cleanup:
-      policyNames:
-        - raw_cleanup
+      policyNames: []
     raw:
       contentDisposition: INLINE
 
@@ -937,8 +933,7 @@ nexus_repos_yum_hosted:
       blobStoreName: default
       strictContentTypeValidation: false
     cleanup:
-      policyNames:
-        - yum_cleanup
+      policyNames: []
     yum:
       repoDataDepth: 1
 
@@ -1020,8 +1015,7 @@ nexus_repos_apt_hosted:
       blobStoreName: default
       strictContentTypeValidation: false
     cleanup:
-      policyNames:
-        - apt_cleanup
+      policyNames: []
     component:
       proprietaryComponents: false
 
@@ -1082,8 +1076,7 @@ nexus_repos_nuget_hosted:
       blobStoreName: default
       strictContentTypeValidation: false
     cleanup:
-      policyNames:
-        - nuget_cleanup
+      policyNames: []
     component:
       proprietaryComponents: false
 
@@ -1167,8 +1160,7 @@ nexus_repos_r_hosted:
       blobStoreName: default
       strictContentTypeValidation: false
     cleanup:
-      policyNames:
-        - r_cleanup
+      policyNames: []
     component:
       proprietaryComponents: false
 
@@ -1250,8 +1242,7 @@ nexus_repos_helm_hosted:
       blobStoreName: default
       strictContentTypeValidation: false
     cleanup:
-      policyNames:
-        - helm_cleanup
+      policyNames: []
     component:
       proprietaryComponents: false
 
@@ -1320,8 +1311,7 @@ nexus_repos_pypi_hosted:
       blobStoreName: default
       strictContentTypeValidation: true
     cleanup:
-      policyNames:
-        - python_cleanup
+      policyNames: []
     component:
       proprietaryComponents: true
   - name: pypi-hosted-2
@@ -1330,8 +1320,7 @@ nexus_repos_pypi_hosted:
       blobStoreName: default
       strictContentTypeValidation: false
     cleanup:
-      policyNames:
-        - python_cleanup
+      policyNames: []
     component:
       proprietaryComponents: false
   - name: pypi-hosted-offline
@@ -1340,8 +1329,7 @@ nexus_repos_pypi_hosted:
       blobStoreName: default
       strictContentTypeValidation: false
     cleanup:
-      policyNames:
-        - python_cleanup
+      policyNames: []
     component:
       proprietaryComponents: false
 
@@ -1471,8 +1459,7 @@ nexus_repos_gitlfs_hosted:
       strictContentTypeValidation: true
       writePolicy: allow_once
     cleanup:
-      policyNames:
-        - gitlfs_cleanup
+      policyNames: []
     component:
       proprietaryComponents: false
 
@@ -1500,8 +1487,7 @@ nexus_repos_docker_hosted:
       writePolicy: allow_once
       latestPolicy: true
     cleanup:
-      policyNames:
-        - docker_cleanup
+      policyNames: []
     component:
       proprietaryComponents: true
     docker:
@@ -1550,8 +1536,7 @@ nexus_repos_maven_hosted:
       strictContentTypeValidation: true
       writePolicy: ALLOW_ONCE # Disable redeploy
     cleanup:
-      policyNames:
-        - maven_cleanup
+      policyNames: []
     component:
       proprietaryComponents: true
     maven:
@@ -1590,8 +1575,7 @@ nexus_repos_maven_hosted:
       strictContentTypeValidation: true
       writePolicy: ALLOW_ONCE
     cleanup:
-      policyNames:
-        - maven_cleanup
+      policyNames: []
     component:
       proprietaryComponents: true
     maven:
@@ -1603,8 +1587,7 @@ nexus_repos_maven_hosted:
     storage:
       strictContentTypeValidation: true
     cleanup:
-      policyNames:
-        - maven_cleanup
+      policyNames: []
     component:
       proprietaryComponents: true
     maven:
@@ -1613,22 +1596,13 @@ nexus_repos_maven_hosted:
       versionPolicy: RELEASE
   - name: repo-cleanup-order-1
     cleanup:
-      policyNames:
-        - maven_cleanup
-        - maven_releases_cleanup
-        - maven_prereleases_cleanup
+      policyNames: []
   - name: repo-cleanup-order-2
     cleanup:
-      policyNames:
-        - maven_releases_cleanup
-        - maven_cleanup
-        - maven_prereleases_cleanup
+      policyNames: []
   - name: repo-cleanup-order-3
     cleanup:
-      policyNames:
-        - maven_prereleases_cleanup
-        - maven_releases_cleanup
-        - maven_cleanup
+      policyNames: []
 
 nexus_repos_maven_proxy:
   - name: maven-central

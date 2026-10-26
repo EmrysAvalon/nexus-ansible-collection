@@ -16,7 +16,13 @@ DefaultCapabilityReference existing = capabilityRegistry.all.find { CapabilityRe
     capabilityReference.context().descriptor().type() == capabilityType
 }
 
-if (existing) {
+if (parsed_args.get('capability_state', 'present') == 'absent') {
+    if (existing) {
+        capabilityRegistry.remove(existing.id())
+        log.info(parsed_args.typeId + ' capability removed')
+    }
+}
+else if (existing) {
     log.info(parsed_args.typeId + ' capability updated to: {}',
             capabilityRegistry.update(existing.id(), Boolean.valueOf(parsed_args.get('capability_enabled', true)), existing.notes(), parsed_args.capability_properties).toString()
     )

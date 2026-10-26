@@ -1,12 +1,30 @@
 
-import org.sonatype.nexus.ldap.persist.LdapConfigurationManager
-import org.sonatype.nexus.ldap.persist.entity.Connection
-import org.sonatype.nexus.ldap.persist.entity.Mapping
 import groovy.json.JsonSlurper
 
 parsed_args = new JsonSlurper().parseText(args)
 
-def ldapConfigMgr = container.lookup(LdapConfigurationManager.class.getName())
+// The LDAP classes moved from org.sonatype to com.sonatype in newer Nexus versions
+def loadLdapClass(String name) {
+    def ldapClass = ['com.sonatype.nexus.ldap.persist', 'org.sonatype.nexus.ldap.persist'].findResult { pkg ->
+        try {
+            this.class.classLoader.loadClass("${pkg}.${name}")
+        } catch (ClassNotFoundException ignored) {
+            null
+        }
+    }
+    if (ldapClass == null) {
+        throw new ClassNotFoundException("Unable to find LDAP class ${name}")
+    }
+    return ldapClass
+}
+
+def ldapConfigMgrClass = loadLdapClass('LdapConfigurationManager')
+def connectionClass = loadLdapClass('entity.Connection')
+def connectionHostClass = loadLdapClass('entity.Connection$Host')
+def connectionProtocolClass = loadLdapClass('entity.Connection$Protocol')
+def mappingClass = loadLdapClass('entity.Mapping')
+
+def ldapConfigMgr = container.lookup(ldapConfigMgrClass.getName())
 
 // Create a new configuration with the given name
 def ldapConfig = ldapConfigMgr.newConfiguration()
@@ -22,8 +40,8 @@ ldapConfigMgr.listLdapServerConfigurations().each {
 }
 
 // Connection
-connection = new Connection()
-connection.setHost(new Connection.Host(Connection.Protocol.valueOf(parsed_args.protocol), parsed_args.hostname, Integer.valueOf(parsed_args.port)))
+connection = connectionClass.newInstance()
+connection.setHost(connectionHostClass.newInstance(Enum.valueOf(connectionProtocolClass, parsed_args.protocol), parsed_args.hostname, Integer.valueOf(parsed_args.port)))
 if (parsed_args.auth == "simple") {
     connection.setAuthScheme("simple")
     connection.setSystemUsername(parsed_args.username)
@@ -44,7 +62,7 @@ ldapConfig.setConnection(connection)
 
 
 // Mapping
-mapping = new Mapping()
+mapping = mappingClass.newInstance()
 mapping.setUserBaseDn(parsed_args.user_base_dn)
 mapping.setLdapFilter(parsed_args.user_ldap_filter)
 mapping.setUserObjectClass(parsed_args.user_object_class)

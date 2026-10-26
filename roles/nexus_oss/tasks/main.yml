@@ -417,6 +417,19 @@
       sslServerIdentityCheckEnabled: "{{ nexus_email_ssl_check_server_identity_enabled }}"
       nexusTrustStoreEnabled: "{{ nexus_email_trust_store_enabled }}"
     status_code: 200,204
+  when: nexus_email_server_enabled | bool
+
+# Newer Nexus versions reject loopback hosts (SSRF protection), so disable via DELETE instead of a PUT with the default host
+- name: Disable mail server
+  ansible.builtin.uri:
+    url: "{{ nexus_api_scheme }}://{{ nexus_api_hostname }}:{{ nexus_api_port }}{{ nexus_api_context_path }}service/rest/v1/email"
+    user: admin
+    password: "{{ current_nexus_admin_password }}"
+    method: DELETE
+    force_basic_auth: true
+    validate_certs: "{{ nexus_api_validate_certs }}"
+    status_code: 200,204
+  when: not nexus_email_server_enabled | bool
 
 - name: Configure branding capability
   ansible.builtin.include_tasks: call_script.yml
@@ -457,6 +470,8 @@
     call_args:
       capability_typeId: defaultrole
       capability_enabled: "{{ (nexus_default_role | length > 0) }}"
+      # Newer Nexus versions reject an empty role, even on a disabled capability
+      capability_state: "{{ 'present' if nexus_default_role | length > 0 else 'absent' }}"
       capability_properties:
         role: "{{ nexus_default_role }}"
 

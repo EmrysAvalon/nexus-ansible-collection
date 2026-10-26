@@ -129,7 +129,7 @@
         )
     ) or
     (__nxs_crnt_raw_prxy__ | selectattr('name', 'equalto', item.name) | first).raw.contentDisposition | default(omit) | upper != item.raw.contentDisposition | default(None) | upper or
-    (__nxs_crnt_raw_prxy__ | selectattr('name', 'equalto', item.name) | first).routingRuleName | default(omit) != item.routingRule | default(None)
+    (__nxs_crnt_raw_prxy__ | selectattr('name', 'equalto', item.name) | first).routingRuleName | default(None) != item.routingRule | default(None)
   tags:
     - raw
     - raw-proxy

@@ -110,7 +110,7 @@
             (__nxs_crnt_apt_prxy__ | selectattr('name', 'equalto', item.name) | first).httpClient.authentication.ntlmDomain | default(None) != item.httpClient.authentication.ntlmDomain | default(None)
         )
     ) or
-    (__nxs_crnt_apt_prxy__ | selectattr('name', 'equalto', item.name) | first).routingRuleName | default(omit) != item.routingRule | default(None) or
+    (__nxs_crnt_apt_prxy__ | selectattr('name', 'equalto', item.name) | first).routingRuleName | default(None) != item.routingRule | default(None) or
     (__nxs_crnt_apt_prxy__ | selectattr('name', 'equalto', item.name) | first).apt.distribution | default(omit) != item.apt.distribution | default(None) or
     (__nxs_crnt_apt_prxy__ | selectattr('name', 'equalto', item.name) | first).apt.flat | default(false) != item.apt.flat | default(false)
   tags:

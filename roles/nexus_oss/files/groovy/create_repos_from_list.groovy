@@ -32,8 +32,29 @@ private boolean configurationChanged(Configuration oldConfig, Configuration newC
         if (oldConfig.attributes.httpclient.authentication == [:]) {
             oldConfig.attributes.httpclient.authentication = null
         }
+        // Newer Nexus versions store a secret id instead of the plain password, so decrypt it before comparing
+        def oldAuth = oldConfig.attributes.httpclient.authentication
+        def newAuth = newConfig.attributes.httpclient?.authentication
+        if (oldAuth?.password && newAuth?.password) {
+            try {
+                def secretsService = container.lookup('org.sonatype.nexus.crypto.secrets.SecretsService')
+                if (Arrays.equals(secretsService.from(oldAuth.password.toString()).decrypt(), newAuth.password.toString().toCharArray())) {
+                    oldAuth.password = newAuth.password
+                }
+            } catch (Exception ignored) {
+                // Older Nexus versions store the plain password, which is compared as is
+            }
+        }
     }
-    return oldConfig.properties != newConfig.properties
+    // Newer Nexus versions store cleanup policy names as a list instead of a set
+    [oldConfig, newConfig].each { config ->
+        if (config.attributes.cleanup?.policyName != null) {
+            config.attributes.cleanup.policyName = config.attributes.cleanup.policyName as Set
+        }
+    }
+    // Newer Nexus versions expose entity ids, which a freshly built configuration does not have
+    def ignoredProperties = ['id', 'repositoryId']
+    return oldConfig.properties.findAll { !(it.key in ignoredProperties) } != newConfig.properties.findAll { !(it.key in ignoredProperties) }
 }
 
 

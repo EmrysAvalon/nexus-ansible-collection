@@ -142,7 +142,7 @@
     (__nxs_crnt_docker_prxy__ | selectattr('name', 'equalto', item.name) | first).dockerProxy.indexUrl | default(omit) != item.dockerProxy.indexUrl | default(None) or
     (__nxs_crnt_docker_prxy__ | selectattr('name', 'equalto', item.name) | first).dockerProxy.cacheForeignLayers | default(false) != item.dockerProxy.cacheForeignLayers | default(false) or
     (__nxs_crnt_docker_prxy__ | selectattr('name', 'equalto', item.name) | first).dockerProxy.foreignLayerUrlWhitelist | default([]) != item.dockerProxy.foreignLayerUrlWhitelist | default([]) or
-    (__nxs_crnt_docker_prxy__ | selectattr('name', 'equalto', item.name) | first).routingRuleName | default(omit) != item.routingRule | default(None)
+    (__nxs_crnt_docker_prxy__ | selectattr('name', 'equalto', item.name) | first).routingRuleName | default(None) != item.routingRule | default(None)
   tags:
     - docker
     - docker-proxy
